@@ -1,6 +1,7 @@
 #include "ergodox_ez.h"
 #include "version.h"
 #include "action_layer.h"
+#include "process_unicodemap.h"
 
 enum layers {
   BASE = 0,
@@ -24,16 +25,11 @@ enum unicode_names {
   ANGRY,
   ARLFT,
   ARRGT,
-  BICEP,
   CONFU,
-  DANCE,
   FIRE,
-  FIST,
-  FNGR2,
   FLUSH,
   GRIMC,
   HEART,
-  HIFIV,
   HORSE,
   HUH,
   HUND,
@@ -45,48 +41,44 @@ enum unicode_names {
   SPARK,
   TEAR,
   THINK,
-  THMBD,
-  THMBU,
   UDFAC,
-  WAVE,
-  WLIFT,
 };
 
 const uint32_t PROGMEM unicode_map[] = {
   [ANGRY] = 0x1F620,
   [ARLFT] = 0x2B05,
   [ARRGT] = 0x27A1,
-  [BICEP] = 0x1F4AA,
   [CONFU] = 0x1F615,
-  [DANCE] = 0x1F483,
   [FIRE]  = 0x1F525,
-  [FIST]  = 0x1F44A,
-  [FNGR2] = 0x270C,
   [FLUSH] = 0x1F633,
   [GRIMC] = 0x1F62C,
   [HEART] = 0x1F49C,
-  [HIFIV] = 0x1F64C,
   [HORSE] = 0x1F434,
   [HUH]   = 0x2049,
   [HUND]  = 0x1F4AF,
   [PARTY] = 0x1F389,
   [RLEYE] = 0x1F644,
   [ROBOT] = 0x1F916,
-  [SHRUG] = 0x1F937,
   [SOB]   = 0x1F62D,
+  [SHRUG] = 0x1F937,
   [SPARK] = 0x2728,
   [TEAR]  = 0x1F622,
   [THINK] = 0x1F914,
-  [THMBU] = 0x1F44D,
-  [THMBD] = 0x1F44E,
   [UDFAC] = 0x1F643,
-  [WAVE]  = 0x1F44B,
-  [WLIFT] = 0x1F3CB,
 };
 
 enum custom_keycodes {
   PLACEHOLDER = SAFE_RANGE, // can always be here
   EPRM,
+  U_BICEP,
+  U_DANCE,
+  U_FIST,
+  U_FNGR2,
+  U_HIFIV,
+  U_THMBU,
+  U_THMBD,
+  U_WAVE,
+  U_WLIFT,
 };
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
@@ -293,10 +285,10 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  */
 [EMOJI] = LAYOUT_ergodox(
   // left hand
-  _______,   X(HUND),  X(FNGR2), _______,  _______,  X(HIFIV), _______,
-  _______,   _______,  X(WAVE),  X(RLEYE), X(ROBOT), X(THINK), X(UDFAC),
-  TO(BASE),  X(ANGRY), X(SPARK), X(DANCE), X(FIRE),  X(GRIMC),
-  _______,   _______,  X(SOB),   X(TEAR),  _______,  X(BICEP), _______,
+  _______,   X(HUND),  U_FNGR2,  _______,  _______,  U_HIFIV,  _______,
+  _______,   _______,  U_WAVE,   X(RLEYE), X(ROBOT), X(THINK), X(UDFAC),
+  TO(BASE),  X(ANGRY), X(SPARK), U_DANCE,  X(FIRE),  X(GRIMC),
+  _______,   _______,  X(SOB),   X(TEAR),  _______,  U_BICEP,  _______,
     _______, _______,  _______,  _______,  _______,
 
                                                  _______, _______,
@@ -304,11 +296,11 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
                                         _______, _______, _______,
 
   // right hand
-  _______,  _______,  _______,  _______,  _______,   X(FIST),  _______,
-  X(THMBU), X(SHRUG), X(WLIFT), _______,  X(FLUSH),  X(PARTY), _______,
-            X(HORSE), _______,  _______,  X(HEART),  _______,  _______,
-  X(THMBD), _______,  _______,  _______,  _______,   X(CONFU), _______,
-                      _______,  X(ARLFT), X(ARRGT),  _______,  X(HUH),
+  _______, _______,  _______,  _______,  _______,   U_FIST,   _______,
+  U_THMBU, X(SHRUG), U_WLIFT,  _______,  X(FLUSH),  X(PARTY), _______,
+           X(HORSE), _______,  _______,  X(HEART),  _______,  _______,
+  U_THMBD, _______,  _______,  _______,  _______,   X(CONFU), _______,
+                     _______,  X(ARLFT), X(ARRGT),  _______,  X(HUH),
 
   _______, _______,
   _______,
@@ -317,15 +309,32 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
 };
 
+bool send_unicode(keyrecord_t *record, char *hex_str) {
+  if (record->event.pressed) {
+    send_unicode_hex_string(hex_str);
+  }
+  return true;
+}
+
+#define SKIN(emoji_hex_str) (emoji_hex_str " D83C DFFC")
+
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
   switch (keycode) {
-    // dynamically generate these.
     case EPRM:
       if (record->event.pressed) {
         eeconfig_init();
       }
       return false;
       break;
+    case U_BICEP: return send_unicode(record, SKIN("D83D DCAA"));
+    case U_DANCE: return send_unicode(record, SKIN("D83D DC83"));
+    case U_FIST:  return send_unicode(record, SKIN("D83D DC4A"));
+    case U_FNGR2: return send_unicode(record, SKIN("270C"));
+    case U_HIFIV: return send_unicode(record, SKIN("D83D DE4C"));
+    case U_THMBU: return send_unicode(record, SKIN("D83D DC4D"));
+    case U_THMBD: return send_unicode(record, SKIN("D83D DC4E"));
+    case U_WAVE:  return send_unicode(record, SKIN("D83D DC4B"));
+    case U_WLIFT: return send_unicode(record, SKIN("D83C DFCB"));
   }
   return true;
 }
