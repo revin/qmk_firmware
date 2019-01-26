@@ -1,5 +1,6 @@
 #include "ergodox_ez.h"
 #include "version.h"
+#include "action_layer.h"
 
 enum layers {
   BASE = 0,
@@ -7,6 +8,24 @@ enum layers {
   ARROWS,
   FN_TENKEY,
   EMOJI,
+};
+
+enum combos {
+  DOUBLE_BRACKETS,
+};
+
+const uint16_t PROGMEM double_brackets_combo[] = {KC_LBRACKET, KC_RBRACKET, COMBO_END};
+
+combo_t key_combos[COMBO_COUNT] = {
+  [DOUBLE_BRACKETS] = COMBO_ACTION(double_brackets_combo),
+};
+
+enum unicode_names {
+  HEART,
+};
+
+const uint32_t PROGMEM unicode_map[] = {
+  [HEART] = 0x1F4AF,
 };
 
 enum custom_keycodes {
@@ -19,7 +38,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 /* Keymap 0: Basic layer
  *
  * ,--------------------------------------------------.           ,--------------------------------------------------.
- * |   `    |   1  |   2  |   3  |   4  |   5  | TT 3 |           |CtCmSp|   6  |   7  |   8  |   9  |   0  |   -    |
+ * |   `    |   1  |   2  |   3  |   4  |   5  |TTFN10|           |CtCmSp|   6  |   7  |   8  |   9  |   0  |   -    |
  * |--------+------+------+------+------+-------------|           |------+------+------+------+------+------+--------|
  * | Tab    |   Q  |   W  |   E  |   R  |   T  |  [   |           |  ]   |   Y  |   U  |   I  |   O  |   P  |   =    |
  * |--------+------+------+------+------+------|      |           |      |------+------+------+------+------+--------|
@@ -27,7 +46,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  * |--------+------+------+------+------+------|  (   |           |  )   |------+------+------+------+------+--------|
  * | Shift  |   Z  |   X  |   C  |   V  |   B  |      |           |      |   N  |   M  |   ,  |   .  |   /  |Shft/ENT|
  * `--------+------+------+------+------+-------------'           `-------------+------+------+------+------+--------'
- *   |Ctrl-C| CS-[ | CS-] | Alt  | MO 1 |                                       | MO 2 |   +  |   *  |   \  | BkSp |
+ *   |Ctrl-C| CS-[ | CS-] | Alt  |MOShft|                                       |MO Arr|   +  |   *  |   \  | BkSp |
  *   `----------------------------------'                                       `----------------------------------'
  *                                        ,--------------.     ,--------------.
  *                                        | CS-4 | Cmd-\ |     | Cmd-' | CS-= |
@@ -39,22 +58,22 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  */
 [BASE] = LAYOUT_ergodox(
   // left hand
-  KC_GRAVE,         KC_1,                    KC_2,                    KC_3,    KC_4,    KC_5, TT(3),
-  KC_TAB,           KC_Q,                    KC_W,                    KC_E,    KC_R,    KC_T, KC_LBRACKET,
-  CTL_T(KC_ESCAPE), KC_A,                    KC_S,                    KC_D,    KC_F,    KC_G,
-  SFT_T(KC_NO),     KC_Z,                    KC_X,                    KC_C,    KC_V,    KC_B, KC_LPRN,
-    LCTL(KC_C),     LGUI(LSFT(KC_LBRACKET)), LGUI(LSFT(KC_RBRACKET)), KC_LALT, MO(1),
+  KC_GRAVE,         KC_1,                    KC_2,                    KC_3,    KC_4,        KC_5, TT(FN_TENKEY),
+  KC_TAB,           KC_Q,                    KC_W,                    KC_E,    KC_R,        KC_T, KC_LBRACKET,
+  CTL_T(KC_ESCAPE), KC_A,                    KC_S,                    KC_D,    KC_F,        KC_G,
+  SFT_T(KC_NO),     KC_Z,                    KC_X,                    KC_C,    KC_V,        KC_B, KC_LPRN,
+    LCTL(KC_C),     LGUI(LSFT(KC_LBRACKET)), LGUI(LSFT(KC_RBRACKET)), KC_LALT, MO(SHIFTED),
 
                                                                       LGUI(LSFT(KC_4)), LGUI(KC_BSLASH),
                                                                                         LGUI(KC_GRAVE),
                                                                       KC_LGUI, KC_MEH,  LCTL(KC_RIGHT),
 
   // right hand
-  LCTL(LGUI(KC_SPACE)), KC_6,     KC_7,     KC_8,       KC_9,           KC_0,      KC_MINUS,
-  KC_RBRACKET,          KC_Y,     KC_U,     KC_I,       KC_O,           KC_P,      KC_EQUAL,
-                        KC_H,     KC_J,     KC_K,       KC_L,           KC_SCOLON, RCTL_T(KC_QUOTE),
-  KC_RPRN,              KC_N,     KC_M,     KC_COMMA,   KC_DOT,         KC_SLASH,  RSFT_T(KC_ENTER),
-                                  MO(2), KC_KP_PLUS, KC_KP_ASTERISK, KC_BSLASH, KC_BSPACE,
+  LCTL(LGUI(KC_SPACE)), KC_6,     KC_7,       KC_8,       KC_9,           KC_0,      KC_MINUS,
+  KC_RBRACKET,          KC_Y,     KC_U,       KC_I,       KC_O,           KC_P,      KC_EQUAL,
+                        KC_H,     KC_J,       KC_K,       KC_L,           KC_SCOLON, RCTL_T(KC_QUOTE),
+  KC_RPRN,              KC_N,     KC_M,       KC_COMMA,   KC_DOT,         KC_SLASH,  RSFT_T(KC_ENTER),
+                                  MO(ARROWS), KC_KP_PLUS, KC_KP_ASTERISK, KC_BSLASH, KC_BSPACE,
 
   RGUI(KC_QUOTE),       RGUI(RSFT(KC_EQUAL)),
   RGUI(KC_SCOLON),
@@ -71,7 +90,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  * |--------+------+------+------+------+------| End  |           | PgDn |------+------+------+------+------+--------|
  * |        |      |      |      |      |   <  |      |           |      |   >  |      |      |      |      | Enter  |
  * `--------+------+------+------+------+-------------'           `-------------+------+------+------+------+--------'
- *   |      |      |      |      | /M1/ |                                       |      |      |      |      |      |
+ *   |      |      |      |      | /M/  |                                       |      |      |      |      |      |
  *   `----------------------------------'                                       `----------------------------------'
  *                                         ,-------------.     ,-------------.
  *                                         |      |      |     |      |      |
@@ -85,7 +104,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   // left hand
   _______,   _______, _______, _______, _______, _______, _______,
   _______,   _______, _______, _______, _______, _______, KC_HOME,
-  _______,   KC_EXLM, KC_AT  , KC_HASH, KC_DLR,  KC_PERC,
+  _______,   KC_EXLM, KC_AT,   KC_HASH, KC_DLR,  KC_PERC,
   _______,   _______, _______, _______, _______, KC_LABK, KC_END,
     _______, _______, _______, _______, _______,
 
@@ -116,7 +135,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  * |--------+------+------+------+------+------| End  |           | PgDn |------+------+------+------+------+--------|
  * |        |      |      |      |S-PgUp|      |      |           |      |      |      |      |      |      | Enter  |
  * `--------+------+------+------+------+-------------'           `-------------+------+------+------+------+--------'
- *   |      |      |      |      |S-PgDn|                                       | /M2/ |      |      |      |      |
+ *   |      |      |      |      |S-PgDn|                                       | /M/  |      |      |      |      |
  *   `----------------------------------'                                       `----------------------------------'
  *                                         ,-------------.     ,-------------.
  *                                         |      |      |     |      |      |
@@ -157,7 +176,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  * |--------+------+------+------+------+-------------|           |------+------+------+------+------+------+--------|
  * |        |      |      |      |      |      |      |           |      |      |   7  |   8  |   9  |   *  |  F12   |
  * |--------+------+------+------+------+------|      |           |      |------+------+------+------+------+--------|
- * | To 0   |      |      |      |      |      |------|           |------|      |   4  |   5  |   6  |   +  |        |
+ * |To BASE |      |      |      |      |      |------|           |------|      |   4  |   5  |   6  |   +  |        |
  * |--------+------+------+------+------+------|      |           |      |------+------+------+------+------+--------|
  * |        |      |      |      |      |      |      |           |      |      |   1  |   2  |   3  |   /  | Enter  |
  * `--------+------+------+------+------+-------------'           `-------------+------+------+------+------+--------'
@@ -175,7 +194,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   // left hand
   _______,   KC_F1,   KC_F2,   KC_F3,   KC_F4,   KC_F5,   _______,
   _______,   _______, _______, _______, _______, _______, _______,
-  TO(0),     _______, _______, _______, _______, _______,
+  TO(BASE),  _______, _______, _______, _______, _______,
   _______,   _______, _______, _______, _______, _______, _______,
     _______, _______, _______, _______, _______,
 
@@ -193,6 +212,51 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   _______, _______,
   _______,
   _______, KC_KP_ENTER, KC_SPACE
+),
+
+/* Keymap 4: Unicode / Emoji
+ *
+ * ,--------------------------------------------------.           ,--------------------------------------------------.
+ * |        |      |      |      |      |      |      |           |      |      |      |      |      |      |        |
+ * |--------+------+------+------+------+-------------|           |------+------+------+------+------+------+--------|
+ * |        |      |      |      |      |      |      |           |      |      |      |      |      |      |        |
+ * |--------+------+------+------+------+------|      |           |      |------+------+------+------+------+--------|
+ * |To BASE |      |      |      |      |      |------|           |------| 100  |      |      |      |      |        |
+ * |--------+------+------+------+------+------|      |           |      |------+------+------+------+------+--------|
+ * |        |      |      |      |      |      |      |           |      |      |      |      |      |      |        |
+ * `--------+------+------+------+------+-------------'           `-------------+------+------+------+------+--------'
+ *   |      |      |      |      |      |                                       |      |      |      |      |      |
+ *   `----------------------------------'                                       `----------------------------------'
+ *                                         ,-------------.     ,-------------.
+ *                                         |      |      |     |      |      |
+ *                                  ,------|------|------|     |------+------+------.
+ *                                  |      |      |      |     |      |      |      |
+ *                                  | Alt  |------|      |     |------|      |      |
+ *                                  |      |      |      |     |      |      |      |
+ *                                  `--------------------'     `--------------------'
+ */
+[EMOJI] = LAYOUT_ergodox(
+  // left hand
+  _______,   _______, _______, _______, _______, _______, _______,
+  _______,   _______, _______, _______, _______, _______, _______,
+  TO(BASE),  _______, _______, _______, _______, _______,
+  _______,   _______, _______, _______, _______, _______, _______,
+    _______, _______, _______, _______, _______,
+
+                                                 _______, _______,
+                                                          _______,
+                                        KC_LALT, _______, _______,
+
+  // right hand
+  _______, _______,  _______, _______, _______, _______, _______,
+  _______, _______,  _______, _______, _______, _______, _______,
+           X(HEART), _______, _______, _______, _______, _______,
+  _______, _______,  _______, _______, _______, _______, _______,
+                     _______, _______, _______, _______, _______,
+
+  _______, _______,
+  _______,
+  _______, _______, _______
 ),
 
 };
@@ -213,7 +277,7 @@ const macro_t *action_get_macro(keyrecord_t *record, uint8_t id, uint8_t opt)
         break;
       }
     return MACRO_NONE;
-};
+}
 
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
   switch (keycode) {
@@ -268,4 +332,18 @@ uint32_t layer_state_set_user(uint32_t state) {
     }
     return state;
 
-};
+}
+
+void matrix_init_user(void) {
+  set_unicode_input_mode(UC_OSX);
+}
+
+void process_combo_event(uint8_t combo_index, bool pressed) {
+  switch(combo_index) {
+    case DOUBLE_BRACKETS:
+      if (pressed) {
+        layer_move(EMOJI);
+      }
+      break;
+  };
+}
