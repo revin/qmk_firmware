@@ -53,7 +53,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  *                                 ,------|------|-------|     |-------+------+------.
  *                                 |      |      | Cmd-` |     | Cmd-; |      |      |
  *                                 | Cmd  | Meh  |-------|     |-------|Hyper |Space |
- *                                 |      |      |C-Right|     | C-Left|      |      |
+ *                                 |      |      |C-Left |     |C-Right|      |      |
  *                                 `---------------------'     `---------------------'
  */
 [BASE] = LAYOUT_ergodox(
@@ -66,7 +66,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
                                                                       LGUI(LSFT(KC_4)), LGUI(KC_BSLASH),
                                                                                         LGUI(KC_GRAVE),
-                                                                      KC_LGUI, KC_MEH,  LCTL(KC_RIGHT),
+                                                                      KC_LGUI, KC_MEH,  LCTL(KC_LEFT),
 
   // right hand
   LCTL(LGUI(KC_SPACE)), KC_6,     KC_7,       KC_8,       KC_9,           KC_0,      KC_MINUS,
@@ -77,7 +77,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
   RGUI(KC_QUOTE),       RGUI(RSFT(KC_EQUAL)),
   RGUI(KC_SCOLON),
-  LCTL(KC_LEFT),        KC_HYPR,  KC_SPACE),
+  LCTL(KC_RIGHT),        KC_HYPR,  KC_SPACE),
 
 /* Keymap 1: Shifted Punctuation
  *
