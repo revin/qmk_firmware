@@ -26,6 +26,7 @@ enum unicode_names {
   ARLFT,
   ARRGT,
   CONFU,
+  ELLIP,
   FIRE,
   FLUSH,
   GRIMC,
@@ -49,6 +50,7 @@ const uint32_t PROGMEM unicode_map[] = {
   [ARLFT] = 0x2B05,
   [ARRGT] = 0x27A1,
   [CONFU] = 0x1F615,
+  [ELLIP] = 0x2026,
   [FIRE]  = 0x1F525,
   [FLUSH] = 0x1F633,
   [GRIMC] = 0x1F62C,
@@ -79,6 +81,7 @@ enum custom_keycodes {
   U_THMBD,
   U_WAVE,
   U_WLIFT,
+  JSARROW,
 };
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
@@ -93,7 +96,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  * |--------+------+------+------+------+------|  (   |           |  )   |------+------+------+------+------+--------|
  * | Shift  |   Z  |   X  |   C  |   V  |   B  |      |           |      |   N  |   M  |   ,  |   .  |   /  |Shft/ENT|
  * `--------+------+------+------+------+-------------'           `-------------+------+------+------+------+--------'
- *   |Ctrl-C| CS-[ | CS-] | Alt  |MOShft|                                       |MO Arr|   +  |   *  |   \  | BkSp |
+ *   | CS-[ | CS-] |Ctrl-C| Alt  |MOShft|                                       |MO Arr|   +  |   *  |   \  | BkSp |
  *   `----------------------------------'                                       `----------------------------------'
  *                                        ,--------------.     ,--------------.
  *                                        | CS-4 | Cmd-\ |     | Cmd-' | CS-= |
@@ -105,11 +108,11 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  */
 [BASE] = LAYOUT_ergodox(
   // left hand
-  KC_GRAVE,         KC_1,                    KC_2,                    KC_3,    KC_4,        KC_5, TT(FN_TENKEY),
-  KC_TAB,           KC_Q,                    KC_W,                    KC_E,    KC_R,        KC_T, KC_LBRACKET,
-  CTL_T(KC_ESCAPE), KC_A,                    KC_S,                    KC_D,    KC_F,        KC_G,
-  SFT_T(KC_NO),     KC_Z,                    KC_X,                    KC_C,    KC_V,        KC_B, KC_LPRN,
-    LCTL(KC_C),     LGUI(LSFT(KC_LBRACKET)), LGUI(LSFT(KC_RBRACKET)), KC_LALT, MO(SHIFTED),
+  KC_GRAVE,                  KC_1,                    KC_2,       KC_3,    KC_4,        KC_5, TT(FN_TENKEY),
+  KC_TAB,                    KC_Q,                    KC_W,       KC_E,    KC_R,        KC_T, KC_LBRACKET,
+  CTL_T(KC_ESCAPE),          KC_A,                    KC_S,       KC_D,    KC_F,        KC_G,
+  SFT_T(KC_NO),              KC_Z,                    KC_X,       KC_C,    KC_V,        KC_B, KC_LPRN,
+    LGUI(LSFT(KC_LBRACKET)), LGUI(LSFT(KC_RBRACKET)), LCTL(KC_C), KC_LALT, MO(SHIFTED),
 
                                                                       LGUI(LSFT(KC_4)), LGUI(KC_BSLASH),
                                                                                         LGUI(KC_GRAVE),
@@ -269,9 +272,9 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  * |--------+------+------+------+------+-------------|           |------+------+------+------+------+------+--------|
  * |        |      |  👋  |  🙄  |  🤖  |  🤔  |  🙃  |           |  👍  |  🤷  |  🏋  |      |  😳  |  🎉  |        |
  * |--------+------+------+------+------+------|      |           |      |------+------+------+------+------+--------|
- * |To BASE |  😠  |  ✨  |  💃  |  🔥  |  😬  |------|           |------|  🐴  |      |      |  💜  |      |        |
+ * |To BASE |  😠  |  ✨  |  💃  |  🔥  |  😬  |------|           |------|  🐴  |      |      |  💜  |      |  =>    |
  * |--------+------+------+------+------+------|      |           |  👎  |------+------+------+------+------+--------|
- * |        |      |  😭  |  😢  |      |  💪  |      |           |      |      |      |      |      |  😕  |        |
+ * |        |      |  😭  |  😢  |      |  💪  |      |           |      |      |      |      |  …   |  😕  |        |
  * `--------+------+------+------+------+-------------'           `-------------+------+------+------+------+--------'
  *   |      |      |      |      | /M/  |                                       | /M/  |   ⬅  |  ➡   |      |  ⁉   |
  *   `----------------------------------'                                       `----------------------------------'
@@ -298,8 +301,8 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   // right hand
   _______, _______,  _______,  _______,  _______,   U_FIST,   _______,
   U_THMBU, X(SHRUG), U_WLIFT,  _______,  X(FLUSH),  X(PARTY), _______,
-           X(HORSE), _______,  _______,  X(HEART),  _______,  _______,
-  U_THMBD, _______,  _______,  _______,  _______,   X(CONFU), _______,
+           X(HORSE), _______,  _______,  X(HEART),  _______,  JSARROW,
+  U_THMBD, _______,  _______,  _______,  X(ELLIP),  X(CONFU), _______,
                      _______,  X(ARLFT), X(ARRGT),  _______,  X(HUH),
 
   _______, _______,
@@ -335,6 +338,11 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
     case U_THMBD: return send_unicode(record, SKIN("D83D DC4E"));
     case U_WAVE:  return send_unicode(record, SKIN("D83D DC4B"));
     case U_WLIFT: return send_unicode(record, SKIN("D83C DFCB"));
+    case JSARROW:
+      if (record->event.pressed) {
+        SEND_STRING("=>");
+      }
+      break;
   }
   return true;
 }
@@ -347,35 +355,10 @@ uint32_t layer_state_set_user(uint32_t state) {
     ergodox_right_led_1_off();
     ergodox_right_led_2_off();
     ergodox_right_led_3_off();
-    switch (layer) {
-      case 1:
-        ergodox_right_led_1_on();
-        break;
-      case 2:
-        ergodox_right_led_2_on();
-        break;
-      case 3:
-        ergodox_right_led_3_on();
-        break;
-      case 4:
-        ergodox_right_led_1_on();
-        ergodox_right_led_2_on();
-        break;
-      case 5:
-        ergodox_right_led_1_on();
-        ergodox_right_led_3_on();
-        break;
-      case 6:
-        ergodox_right_led_2_on();
-        ergodox_right_led_3_on();
-        break;
-      case 7:
-        ergodox_right_led_1_on();
-        ergodox_right_led_2_on();
-        ergodox_right_led_3_on();
-        break;
-      default:
-        break;
+    if (layer <= 7) {
+      if (layer & 0x01) ergodox_right_led_1_on();
+      if (layer & 0x02) ergodox_right_led_2_on();
+      if (layer & 0x04) ergodox_right_led_3_on();
     }
     return state;
 
