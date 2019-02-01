@@ -94,15 +94,15 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  * |--------+------+------+------+------+------|      |           |      |------+------+------+------+------+--------|
  * |Ctrl/Esc|   A  |   S  |   D  |   F  |   G  |------|           |------|   H  |   J  |   K  |   L  |   ;  | Ctrl/' |
  * |--------+------+------+------+------+------|  (   |           |  )   |------+------+------+------+------+--------|
- * | Shift  |   Z  |   X  |   C  |   V  |   B  |      |           |      |   N  |   M  |   ,  |   .  |   /  |Shft/ENT|
+ * | Shift  |   Z  |   X  |   C  |   V  |   B  |      |           |      |   N  |   M  |   ,  |   .  |   /  | Shift  |
  * `--------+------+------+------+------+-------------'           `-------------+------+------+------+------+--------'
  *   | CS-[ | CS-] |Ctrl-C| Alt  |MOShft|                                       |MO Arr|   +  |   *  |   \  | BkSp |
  *   `----------------------------------'                                       `----------------------------------'
  *                                        ,--------------.     ,--------------.
  *                                        | CS-4 | Cmd-\ |     | Cmd-' | CS-= |
  *                                 ,------|------|-------|     |-------+------+------.
- *                                 |      |      | Cmd-` |     | Cmd-; |      |      |
- *                                 | Cmd  | Meh  |-------|     |-------|Hyper |Space |
+ *                                 | Cmd/ | Meh/ | Cmd-` |     | Cmd-; |Hyper/| Cmd/ |
+ *                                 |Space |Enter |-------|     |-------|Enter |Space |
  *                                 |      |      |C-Left |     |C-Right|      |      |
  *                                 `---------------------'     `---------------------'
  */
@@ -115,19 +115,19 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     LGUI(LSFT(KC_LBRACKET)), LGUI(LSFT(KC_RBRACKET)), LCTL(KC_C), KC_LALT, MO(SHIFTED),
 
                                                                       LGUI(LSFT(KC_4)), LGUI(KC_BSLASH),
-                                                                                        LGUI(KC_GRAVE),
-                                                                      KC_LGUI, KC_MEH,  LCTL(KC_LEFT),
+                                                                                         LGUI(KC_GRAVE),
+                                                     CMD_T(KC_SPACE),  MEH_T(KC_ENTER),   LCTL(KC_LEFT),
 
   // right hand
   LCTL(LGUI(KC_SPACE)), KC_6,     KC_7,       KC_8,       KC_9,           KC_0,      KC_MINUS,
   KC_RBRACKET,          KC_Y,     KC_U,       KC_I,       KC_O,           KC_P,      KC_EQUAL,
                         KC_H,     KC_J,       KC_K,       KC_L,           KC_SCOLON, RCTL_T(KC_QUOTE),
-  KC_RPRN,              KC_N,     KC_M,       KC_COMMA,   KC_DOT,         KC_SLASH,  RSFT_T(KC_ENTER),
+  KC_RPRN,              KC_N,     KC_M,       KC_COMMA,   KC_DOT,         KC_SLASH,  KC_RSHIFT,
                                   MO(ARROWS), KC_KP_PLUS, KC_KP_ASTERISK, KC_BSLASH, KC_BSPACE,
 
-  RGUI(KC_QUOTE),       RGUI(RSFT(KC_EQUAL)),
+  RGUI(KC_QUOTE),  RGUI(RSFT(KC_EQUAL)),
   RGUI(KC_SCOLON),
-  LCTL(KC_RIGHT),        KC_HYPR,  KC_SPACE),
+  LCTL(KC_RIGHT),  HYPR_T(KC_ENTER), CMD_T(KC_SPACE)),
 
 /* Keymap 1: Shifted Punctuation
  *
