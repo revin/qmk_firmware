@@ -105,8 +105,8 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  *                                        ,--------------.     ,--------------.
  *                                        | CS-4 | Cmd-\ |     | Cmd-' | CS-= |
  *                                 ,------|------|-------|     |-------+------+------.
- *                                 | Cmd/ | Meh/ | Cmd-` |     | Cmd-; |Hyper/| Cmd/ |
- *                                 |Space |Enter |-------|     |-------|Enter |Space |
+ *                                 |      | Meh/ | Cmd-` |     | Cmd-; |Hyper/| Cmd/ |
+ *                                 | Cmd  |Enter |-------|     |-------|Enter |Space |
  *                                 |      |      |C-Left |     |C-Right|      |      |
  *                                 `---------------------'     `---------------------'
  */
@@ -120,7 +120,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
                                                                       LGUI(LSFT(KC_4)), LGUI(KC_BSLASH),
                                                                                          LGUI(KC_GRAVE),
-                                                     CMD_T(KC_SPACE),  MEH_T(KC_ENTER),   LCTL(KC_LEFT),
+                                                             KC_LCMD,  MEH_T(KC_ENTER),   LCTL(KC_LEFT),
 
   // right hand
   LCTL(LGUI(KC_SPACE)), KC_6,     KC_7,       KC_8,       KC_9,           KC_0,      KC_MINUS,
